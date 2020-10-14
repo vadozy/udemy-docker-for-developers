@@ -7,6 +7,29 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const { MongoClient } = require('mongodb');
+
+const uri = "mongodb://mongodb:27017"
+const client = new MongoClient(uri);
+
+
+client.connect();
+
+async function runMongo() {
+  let isConnected = false;
+  try {
+    //await client.connect();
+    await client.db("admin").command({ping: 1});
+    isConnected = true;
+    console.log('connected to mongo');
+  } catch (error) {
+    console.error(`something went wrong: ${error}`);
+  } finally {
+    //await client.close();
+    return isConnected;
+  }
+}
+
 var app = express();
 
 // view engine setup
@@ -21,6 +44,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.get('/test', async (req, res, next) => {
+  const result = await runMongo();
+  res.send(`MongoDB is ${result ? 'connected' : 'not connected'}`);
+  res.end();
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
