@@ -8,3 +8,10 @@ $ docker run -p 3000:3000 -v $(pwd):/var/www -w /var/www node:lts-alpine3.9 npm 
 
 
 # Where /var/www is pretty arbitrary
+
+
+
+# docker-compose
+$ docker-compose up -d
+$ docker-compose logs
+$ docker-compose down
