@@ -5,12 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node src/app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Vadim Storozhuk",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   }
 }
