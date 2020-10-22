@@ -6,9 +6,13 @@ import './App.css';
 function App() {
   const [ result, setResult ] = useState('');
   useEffect(() => {
-    //setResult('VADIM');
+    const API_URL = process.env.REACT_APP_API_URL || 'localhost';
+    const API_PORT = process.env.REACT_APP_API_PORT || '3001';
+    const API_BASE_URL = `http://${API_URL}:${API_PORT}/test`;
+    console.log('Request on address ', API_BASE_URL);
     (async () => {
-      const result = await axios.get('http://localhost:3001/test');
+      //const result = await axios.get('http://localhost:3001/test');
+      const result = await axios.get(API_BASE_URL);
       setResult(result.data);
     })();
   }, []);
