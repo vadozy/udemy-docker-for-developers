@@ -1,6 +1,6 @@
 FROM node:lts-alpine3.9
 
-WORKDIR /app
+WORKDIR /usr/app
 
 COPY . .
 

@@ -19,7 +19,7 @@ app.use('/test', cors(corsOption));
 
 app.get('/test', (req, res) => {
   console.log('Processing request');
-  res.send('Hello from express');
+  res.send('Hello from express!!');
 });
 
 app.listen(PORT, () => {
