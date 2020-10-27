@@ -5,16 +5,36 @@ import './App.css';
 
 function App() {
   const [ result, setResult ] = useState('');
+  const [ mongoHealth, setMongoHealth ] = useState('fail');
+
   useEffect(() => {
     const API_URL = process.env.REACT_APP_API_URL || 'localhost';
     const API_PORT = process.env.REACT_APP_API_PORT || '3001';
     const API_BASE_URL = `http://${API_URL}:${API_PORT}/test`;
     console.log('Request on address ', API_BASE_URL);
-    (async () => {
+
+    const fetchData = async () => {
       //const result = await axios.get('http://localhost:3001/test');
       const result = await axios.get(API_BASE_URL);
       setResult(result.data);
-    })();
+    }
+    fetchData();
+
+  }, []);
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const result = await axios.get('http://localhost:3001/healthcheck');
+        setMongoHealth(result.data.status);
+      } catch(err) {
+        setMongoHealth('fail');
+      }
+    }
+    const checkStatusTimerId = setInterval(() => checkHealth(), 1000);
+    return () => {
+      clearInterval(checkStatusTimerId);
+    };
   }, []);
 
 
@@ -34,6 +54,7 @@ function App() {
           Learn React
           The respones from axios is {result}
         </a>
+        <h4>MongoDb connection status: {mongoHealth}</h4>
       </header>
     </div>
   );
