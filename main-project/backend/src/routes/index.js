@@ -1,5 +1,6 @@
 import cors from 'cors';
 import healthCheck from './health-route.js';
+import notes from './notes-route.js';
 
 const CORS_PORT = process.env.CORS_PORT || 3000;
 const CORS_URL = process.env.CORS_URL || 'localhost';
@@ -15,6 +16,7 @@ const corsOption = {
 function initRouters(app) {
   app.use(cors(corsOption));
   app.use(healthCheck);
+  app.use(notes);
 }
 
 export default initRouters;

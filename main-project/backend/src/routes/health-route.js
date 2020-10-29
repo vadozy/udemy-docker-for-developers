@@ -1,27 +1,10 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import * as healthController from '../controllers/health-controller.js'
 
 const router = express.Router();
 
-router.get('/test', (req, res) => {
-  console.log('Processing request');
-  res.send('Hello from express!!');
-});
+router.get('/test', healthController.testResponse);
 
-router.get('/healthcheck', (req, res) => {
-  mongoose.connection.db.admin().ping((error, result) => {
-    if (error || !result) {
-      res.send({
-        message: `Ping failed with error: ${error}`,
-        status: 'fail',
-      });
-    } else {
-      res.send({
-        message: `Connection with mongo is up: ${result}`,
-        status: 'success',
-      });
-    }
-  });
-});
+router.get('/healthcheck', healthController.ping);
 
 export default router;
