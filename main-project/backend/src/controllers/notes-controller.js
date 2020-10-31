@@ -1,4 +1,5 @@
 import Note from '../models/notes-model.js';
+import mongoose from 'mongoose';
 
 export async function findAllNotes(req, res) {
   let data;
@@ -13,7 +14,41 @@ export async function findAllNotes(req, res) {
     return;
   }
 
-  res.send(data);
+  res.send({
+    data,
+    success: true,
+  });
+}
+
+export async function findOneNote(req, res) {
+  const { id } = req.params;
+  const valid = mongoose.Types.ObjectId.isValid(id);
+  if (!valid) {
+    const errMsg = `Invalid Request. Note id type is NOT valid: id: ${id}`;
+    console.error(errMsg);
+    res.status(400).send({
+      message: errMsg,
+      success: false,
+    });
+    return;
+  }
+
+  let data;
+  try {
+    data = await Note.findById(id);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: 'Something went wrong',
+      success: false,
+    });
+    return;
+  }
+
+  res.send({
+    data,
+    success: true,
+  });
 }
 
 export async function createNote(req, res) {
@@ -43,5 +78,76 @@ export async function createNote(req, res) {
     message: 'Note created',
     success: true,
     data: data,
+  });
+}
+
+export async function deleteOneNote(req, res) {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId(id)) {
+    const errMsg = `Invalid Request. Note id type is NOT valid: id: ${id}`;
+    console.error(errMsg);
+    res.status(400).send({
+      message: errMsg,
+      success: false,
+    });
+    return;
+  }
+
+  let data;
+  try {
+    // data = await Note.deleteOne(Note.findById(id));
+    data = await Note.deleteOne({ _id: id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: 'Something went wrong',
+      success: false,
+    });
+    return;
+  }
+
+  res.send({
+    data,
+    success: true,
+  });
+}
+
+export async function updateOneNote(req, res) {
+  const { id } = req.params;
+  const isIdValid = mongoose.Types.ObjectId.isValid(id);
+  if (!req.body || !isIdValid) {
+    const errMsg = 'Invalid Request';
+    console.error(errMsg);
+    res.status(400).send({
+      message: errMsg,
+      success: false,
+    });
+    return;
+  }
+
+  let data;
+  try {
+    data = await Note.findByIdAndUpdate(
+      id,
+      {
+        title: req.body.title,
+        description: req.body.description,
+      },
+      {
+        new: true,
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: 'Something went wrong',
+      success: false,
+    });
+    return;
+  }
+
+  res.send({
+    data,
+    success: true,
   });
 }

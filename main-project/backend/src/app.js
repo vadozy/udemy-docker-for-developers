@@ -9,6 +9,7 @@ const MONGO_DB = `mongodb://${MONGO_URL}:${MONGO_PORT}`;
 mongoose.connect(MONGO_DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 
 const db = mongoose.connection;
