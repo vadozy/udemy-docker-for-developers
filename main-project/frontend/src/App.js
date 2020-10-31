@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'localhost';
+const API_PORT = process.env.REACT_APP_API_PORT || '8080';
 
 function App() {
   const [result, setResult] = useState('');
   const [mongoHealth, setMongoHealth] = useState('fail');
 
   useEffect(() => {
-    const API_URL = process.env.REACT_APP_API_URL || 'localhost';
-    const API_PORT = process.env.REACT_APP_API_PORT || '3001';
-    const API_BASE_URL = `http://${API_URL}:${API_PORT}/test`;
+    const API_BASE_URL = `http://${API_URL}:${API_PORT}/api/test`;
     console.log('Request on address ', API_BASE_URL);
 
     const fetchData = async () => {
@@ -24,13 +24,16 @@ function App() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const result = await axios.get('http://localhost:3001/healthcheck');
+        const result = await axios.get(
+          `http://${API_URL}:${API_PORT}/api/healthcheck`
+        );
         setMongoHealth(result.data.status);
       } catch (err) {
         setMongoHealth('fail');
       }
     };
-    const checkStatusTimerId = setInterval(() => checkHealth(), 1000);
+    setTimeout(() => checkHealth(), 500);
+    const checkStatusTimerId = setInterval(() => checkHealth(), 10000);
     return () => {
       clearInterval(checkStatusTimerId);
     };
@@ -39,7 +42,6 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -49,7 +51,7 @@ function App() {
           target='_blank'
           rel='noopener noreferrer'
         >
-          Learn React The respones from axios is {result}
+          The respones from axios is {result}
         </a>
         <h4>MongoDb connection status: {mongoHealth}</h4>
       </header>
