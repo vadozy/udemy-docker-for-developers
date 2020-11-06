@@ -41,8 +41,8 @@ services:
     image: mongo:4.0.20-xenial
     volumes:
       - mongodb_api:/data/db
-    # ports:
-    #   - '27017:27017'
+    ports:
+      - '27017:27017'
 
   nginx_reverse_proxy:
     image: nginx:1.18-alpine

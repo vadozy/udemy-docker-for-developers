@@ -1,13 +1,13 @@
 import React from 'react';
 
-function Note({ title, description }) {
+function Note({ note, handleDelete }) {
   return (
     <div className='col s12 m6 l4'>
       <div className='card'>
         <div className='card-stacked'>
           <div className='card-content'>
-            <span className='card-title'>{title}</span>
-            <p>{description}</p>
+            <span className='card-title'>{note.title}</span>
+            <p>{note.description}</p>
           </div>
           <div className='card-action'>
             <button
@@ -16,7 +16,10 @@ function Note({ title, description }) {
             >
               Edit
             </button>
-            <button className='waves-effect waves-light btn red lighten-2'>
+            <button
+              onClick={() => handleDelete(note._id)}
+              className='waves-effect waves-purple btn red lighten-2'
+            >
               Delete
             </button>
           </div>

@@ -14,6 +14,8 @@ export async function findAllNotes(req, res) {
     return;
   }
 
+  console.log('Sending all notes');
+
   res.send({
     data,
     success: true,
