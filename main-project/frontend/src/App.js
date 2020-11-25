@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import './App.scss';
 import Navbar from './components/Navbar';
 import Notes from './components/Notes';
+import NotesForm from './components/NotesForm';
 
 import M from 'materialize-css';
 
 function App() {
   const _noteModalRef = useRef(null);
+
   // initializes materialized effects
   useEffect(() => {
     M.AutoInit();
@@ -28,7 +30,7 @@ function App() {
       </div>
       <div id='modal-add-note' className='modal' ref={_noteModalRef}>
         <div className='modal-content'>
-          <h4>Create a new note</h4>
+          <NotesForm />
         </div>
         <div className='modal-footer'>
           <a
