@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
+import StateContext from '../StateContext';
 
 import M from 'materialize-css';
 
@@ -6,8 +7,9 @@ function NotesForm() {
   const _titleInputRef = useRef(null);
   const _descriptionRef = useRef(null);
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const { title, setTitle, description, setDescription } = useContext(
+    StateContext
+  );
 
   // initializes materialized effects
   useEffect(() => {
